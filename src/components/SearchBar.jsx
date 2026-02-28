@@ -7,6 +7,7 @@ const SearchBar = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
+        setUsername(username.trim());
         if (username.trim()) {
             navigate(`/user/${username}`);
         }

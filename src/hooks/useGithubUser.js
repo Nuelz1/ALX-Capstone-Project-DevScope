@@ -6,6 +6,14 @@ const useGithubUser = (username) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+
+    if (!username) {
+      setUser(null);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+    
     const fetchUser = async () => {
       try {
         setLoading(true);
