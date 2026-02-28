@@ -13,9 +13,12 @@ const useUserRepos = (username) => {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(
-          `https://api.github.com/users/${username}/repos?per_page=100`
-        );
+        const response = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`, {
+          headers: {
+            Authorization: `token ${import.meta.env.VITE_GITHUB_TOKEN}`
+          }
+        });
+        
 
         if (!response.ok) {
           throw new Error("Failed to fetch repositories");

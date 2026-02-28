@@ -15,16 +15,24 @@ const useGithubUser = (username) => {
     }
     
     const fetchUser = async () => {
+
       try {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(
-          `https://api.github.com/users/${username}`
-        );
+        const response = await fetch(`https://api.github.com/users/${username}`, {
+          headers: {
+            Authorization: `token ${import.meta.env.VITE_GITHUB_TOKEN}`
+          }
+         });
 
-        if (!response.ok) {
-          throw new Error(`User not found ${response.statusText}`);
+         if (!response.ok) {
+          if (response.status === 404){
+            throw new Error("No user found with that username. Please check the spelling and try again.");
+         }
+
+          throw new Error("Something went wrong. Please try again later")
+
         }
 
         const data = await response.json();

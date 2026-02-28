@@ -1,6 +1,7 @@
 import react from 'react'
 
-const UserCard = ({ login, avatar_url, public_repos }) => {
+const UserCard = ({ user }) => {
+    const { avatar_url, login, public_repos } = user;
     return (
         <div className="bg-slate-800 rounded-lg p-4 flex items-center gap-4">
             <img src={avatar_url} alt={login} className="w-12 h-12 rounded-full" />

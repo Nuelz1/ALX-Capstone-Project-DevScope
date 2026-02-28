@@ -1,35 +1,15 @@
-import { useState } from "react";
-import SearchBar from "../components/SearchBar";
-import UserCard from "../components/UserCard";
-import useGithubUser from "../hooks/useGithubUser";
-import useUserRepos from "../hooks/useUserRepos";
+import SearchBar from "../components/SearchBar"
+
+// ✅ Fixed: Home no longer tries to manage username state or fetch data.
+// SearchBar uses useNavigate internally and routes to /user/:username.
+// All data fetching and display happens in UserProfile.
 
 export default function Home() {
-  const [username, setUsername] = useState("");
-
-  const { user, loading: userLoading, error: userError } =
-    useGithubUser(username);
-
-  const { repos, loading: repoLoading, error: repoError } =
-    useUserRepos(username);
-
-  const totalStars = repos.reduce(
-    (acc, repo) => acc + repo.stargazers_count,
-    0
-  );
-
-  const repoCount = repos.length;
-
-
   return (
-    <div className="min-h-screen bg-slate-950 text-white p-8">
-      <SearchBar setUsername={setUsername} />
-
-      {userLoading && <p>Loading user...</p>}
-      {userError && <p>{userError}</p>}
-      {user && <UserCard user={user} />}
-
-      {/* Later: Analytics Component */}
+    <div className="flex flex-col items-center justify-center min-h-[70vh] text-white">
+      <h1 className="text-4xl font-bold mb-2">DevScope</h1>
+      <p className="text-slate-400 mb-8">Search any GitHub developer and explore their profile</p>
+      <SearchBar />
     </div>
-  );
+  )
 }

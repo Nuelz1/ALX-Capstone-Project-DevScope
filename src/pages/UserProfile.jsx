@@ -9,12 +9,14 @@ import {
   sortRepositories,
 } from "../utils/analytics";
 import RepoList from "../components/RepoList";
+import Spinner from "../components/UI/Spinner";
+import ErrorMessage from "../components/UI/ErrorMessage";
 
 const UserProfile = () => {
   const { username } = useParams();
   const { user, loading, error } = useGithubUser(username);
   const { repos, loading: reposLoading, error: reposError } = useUserRepos(username);
-  const {sortBy, setSortBy} = useState("stars");
+  const [sortBy, setSortBy] = useState("stars");
 
   const totalStars = getTotalStars(repos);
   const topRepo = getTopStarredRepo(repos);
@@ -22,16 +24,11 @@ const UserProfile = () => {
   const sortedRepos = sortRepositories(repos, sortBy);
   
   if (loading || reposLoading) {
-    return <div className="text-white p-8">Loading...</div>;
+    return <Spinner size="large" fullpage={true} />;
   }
 
   if (error || reposError) {
-    return(
-
-   <div className="text-rose-500 p-8">
-    {error || reposError}
-    </div>
-    );
+    return <ErrorMessage message={error || reposError} />;
   }
 
   return (

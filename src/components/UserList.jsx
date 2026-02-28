@@ -1,4 +1,4 @@
-import UseCard from './UserCard.jsx';
+import UserCard from './UserCard.jsx';
 
 function UserList({users}) {
     if (!users || users.length === 0){
@@ -8,7 +8,7 @@ function UserList({users}) {
     return(
         <div>
             {users.map((user) =>(
-                <userCard key={user.id} user={user} />
+                <UserCard key={user.id} user={user} />
             ))}
         </div>
     )
