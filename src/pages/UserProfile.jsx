@@ -2,9 +2,9 @@ import { useParams } from "react-router-dom";
 import useGithubUser from "../hooks/useGithubUser";
 import useUserRepos from "../hooks/useUserRepos";
 import {
-  calculateTotalStars,
-  getTopStarredRepo,
+  getTotalStars,
   getMostUsedLanguage,
+  getTopStarredRepo,
 } from "../utils/analytics";
 import UserCard from "../components/UserCard";
 
@@ -13,7 +13,7 @@ const UserProfile = () => {
   const { user, loading, error } = useGithubUser(username);
   const { repos, loading: reposLoading, error: reposError } = useUserRepos(username);
   
-  const totalStars = calculateTotalStars(repos);
+  const totalStars = getTotalStars(repos);
   const topRepo = getTopStarredRepo(repos);
   const topLanguage = getMostUsedLanguage(repos);
   
