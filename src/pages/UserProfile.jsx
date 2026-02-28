@@ -1,3 +1,4 @@
+import {useState} from "react";
 import { useParams } from "react-router-dom";
 import useGithubUser from "../hooks/useGithubUser";
 import useUserRepos from "../hooks/useUserRepos";
@@ -5,17 +6,20 @@ import {
   getTotalStars,
   getMostUsedLanguage,
   getTopStarredRepo,
+  sortRepositories,
 } from "../utils/analytics";
-import UserCard from "../components/UserCard";
+import RepoList from "../components/RepoList";
 
 const UserProfile = () => {
   const { username } = useParams();
   const { user, loading, error } = useGithubUser(username);
   const { repos, loading: reposLoading, error: reposError } = useUserRepos(username);
-  
+  const {sortBy, setSortBy} = useState("stars");
+
   const totalStars = getTotalStars(repos);
   const topRepo = getTopStarredRepo(repos);
   const topLanguage = getMostUsedLanguage(repos);
+  const sortedRepos = sortRepositories(repos, sortBy);
   
   if (loading || reposLoading) {
     return <div className="text-white p-8">Loading...</div>;
@@ -83,18 +87,10 @@ const UserProfile = () => {
           <h2 className="text-xl font-bold mb-4">
             Repositories
           </h2>
-
-          {repos.map((repo) => (
-            <div
-              key={repo.id}
-              className="bg-slate-900 border border-slate-800 p-4 rounded-xl mb-4"
-            >
-              <h3 className="font-semibold">{repo.name}</h3>
-              <p className="text-sm text-slate-400">
-                ⭐ {repo.stargazers_count} | 🍴 {repo.forks_count}
-              </p>
-            </div>
-          ))}
+          <div>
+            <RepoList repos={sortedRepos} />
+          </div>
+          
         </div>
 
       </div>
