@@ -69,3 +69,11 @@ export const sortRepositories = (repos, criteria) => {
       return repos;
   }
 };
+
+export const getUniqueLanguages = (repos) => {
+  if (!repos || repos.length === 0) return [];
+
+  const languages = [...new Set(repos.map((repo) => repo.language).filter(Boolean))];
+
+  return languages;
+};

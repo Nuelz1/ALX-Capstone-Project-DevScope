@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';  
+import { fetchGithubUser } from '../services/githubService';
 
 const useGithubUser = (username) => {
   const [user, setUser] = useState(null);
@@ -19,26 +20,15 @@ const useGithubUser = (username) => {
       try {
         setLoading(true);
         setError(null);
-
-        const response = await fetch(`https://api.github.com/users/${username}`, {
-          headers: {
-            Authorization: `token ${import.meta.env.VITE_GITHUB_TOKEN}`
-          }
-         });
-
-         if (!response.ok) {
-          if (response.status === 404){
-            throw new Error("No user found with that username. Please check the spelling and try again.");
-         }
-
-          throw new Error("Something went wrong. Please try again later")
-
-        }
-
-        const data = await response.json();
+        const data = await fetchGithubUser(username);
         setUser(data);
-      } catch (err) {
-        setError(err.message);
+      }
+        catch (err) {
+        if (err.status === 404) {
+          setError('User not found');
+        } else {
+          setError('An error occurred while fetching user data');
+        }
       } finally {
         setLoading(false);
       }

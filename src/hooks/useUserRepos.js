@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import {fetchUserRepos} from '../services/githubService';
 
 const useUserRepos = (username) => {
   const [repos, setRepos] = useState([]);
@@ -6,28 +7,25 @@ const useUserRepos = (username) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!username) return;
-
+    if (!username) {
+      setRepos([]);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+    
     const fetchRepos = async () => {
       try {
         setLoading(true);
         setError(null);
-
-        const response = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`, {
-          headers: {
-            Authorization: `token ${import.meta.env.VITE_GITHUB_TOKEN}`
-          }
-        });
-        
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch repositories");
-        }
-
-        const data = await response.json();
+        const data = await fetchUserRepos(username);
         setRepos(data);
       } catch (err) {
-        setError(err.message);
+        if (err.status === 404) {
+          setError('User not found');
+        } else {
+          setError('An error occurred while fetching repositories');
+        }
       } finally {
         setLoading(false);
       }

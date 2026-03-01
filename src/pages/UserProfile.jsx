@@ -7,10 +7,12 @@ import {
   getMostUsedLanguage,
   getTopStarredRepo,
   sortRepositories,
+  getUniqueLanguages
 } from "../utils/analytics";
 import RepoList from "../components/RepoList";
 import Spinner from "../components/UI/Spinner";
 import ErrorMessage from "../components/UI/ErrorMessage";
+import LanguageFilter from "../components/LanguageFilter";
 
 const UserProfile = () => {
   const { username } = useParams();
@@ -24,7 +26,7 @@ const UserProfile = () => {
   const sortedRepos = sortRepositories(repos, sortBy);
   
   if (loading || reposLoading) {
-    return <Spinner size="large" fullpage={true} />;
+    return <Spinner size="large" fullPage={true} />;
   }
 
   if (error || reposError) {
