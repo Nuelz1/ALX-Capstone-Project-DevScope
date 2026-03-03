@@ -19,12 +19,21 @@ const UserProfile = () => {
   const { user, loading, error } = useGithubUser(username);
   const { repos, loading: reposLoading, error: reposError } = useUserRepos(username);
   const [sortBy, setSortBy] = useState("stars");
+  const [selectedLanguage, setSelectedLanguage] = useState(null)
+
+
+  const filteredRepos = selectedLanguage
+    ? repos.filter(repo => repo.language === selectedLanguage)
+    : repos
 
   const totalStars = getTotalStars(repos);
   const topRepo = getTopStarredRepo(repos);
   const topLanguage = getMostUsedLanguage(repos);
-  const sortedRepos = sortRepositories(repos, sortBy);
+  const sortedRepos = sortRepositories(filteredRepos, sortBy);
+  const languages = getUniqueLanguages(repos);
+   
   
+
   if (loading || reposLoading) {
     return <Spinner size="large" fullPage={true} />;
   }
@@ -81,6 +90,27 @@ const UserProfile = () => {
           </div>
         </div>
 
+        {/* Controls Section */}
+        <div
+        className = "flex flex-wrap items-center gap- my-4">
+          <select
+          className = "border p-2 rounded-md bg-blue-900"
+          onChange = {(e) => setSortBy(e.target.value)}
+          value={sortBy}
+          >
+            <option value = "stars">Stars</option>
+            <option value = "updated">Updated</option>
+            <option value = "forks">Forks</option>
+          </select>
+
+          <LanguageFilter 
+          languages={languages}
+          selectedLanguage={selectedLanguage}
+          onSelectLanguage={setSelectedLanguage}
+          />
+
+        </div>
+
         {/* Repo List */}
         <div>
           <h2 className="text-xl font-bold mb-4">
@@ -89,7 +119,6 @@ const UserProfile = () => {
           <div>
             <RepoList repos={sortedRepos} />
           </div>
-          
         </div>
 
       </div>
