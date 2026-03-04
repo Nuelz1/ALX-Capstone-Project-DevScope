@@ -7,7 +7,7 @@ export default function Button({ onClick, className = '', size = "medium", varia
   };
 
   const variantClasses = {
-    primary: "bg-indigo-600 text-white hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed",
+    primary: "bg-indigo-800 text-white hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed",
     secondary: "bg-gray-600 text-white hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed",
     outline: "border border-gray-600 text-white hover:bg-gray-700 disabled:border-gray-400 disabled:text-gray-400 disabled:cursor-not-allowed"
   };

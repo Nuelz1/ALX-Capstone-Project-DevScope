@@ -24,6 +24,9 @@ const UserProfile = () => {
   const [selectedLanguage, setSelectedLanguage] = useState(null)
   const navigate = useNavigate()
 
+  console.log("sortBy:", sortBy)
+  console.log("selectedLanguage:", selectedLanguage)
+
   const filteredRepos = selectedLanguage
     ? repos.filter(repo => repo.language === selectedLanguage)
     : repos
@@ -178,15 +181,22 @@ const UserProfile = () => {
           {/* Controls Section */}
           <div
             className="flex flex-wrap items-center gap-4 my-4">
-            <select
-              className="border p-2 rounded-md bg-blue-900"
-              onChange={(e) => setSortBy(e.target.value)}
-              value={sortBy}
+            <Button
+            variant={sortBy === "stars" ? "primary" : "outline"}
+            onClick={() => setSortBy("stars")}
             >
-              <option value="stars">Stars</option>
-              <option value="updated">Updated</option>
-              <option value="forks">Forks</option>
-            </select>
+              Stars</Button>
+              <Button
+            variant={sortBy === "forks" ? "primary" : "outline"}
+            onClick={() => setSortBy("forks")}
+            >
+              Forks</Button>
+              <Button
+            variant={sortBy === "updated" ? "primary" : "outline"}
+            onClick={() => setSortBy("updated")}
+            >
+              Updated</Button>
+           
 
             <LanguageFilter
               languages={languages}
