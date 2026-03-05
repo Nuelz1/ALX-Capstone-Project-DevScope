@@ -8,10 +8,11 @@ To use Devscope, type a username and booooom, you have an analytical dashbord of
 (https://alx-capstone-project-dev-scope.vercel.app/)
 
 ## 📸 Screenshot
-<img width="1777" height="1037" alt="image" src="https://github.com/user-attachments/assets/477b9b2a-df91-4f76-90ad-d250f052cb9e" />
-
 
 <img width="1765" height="1037" alt="Home page" src="https://github.com/user-attachments/assets/e276ef45-999a-4ef8-9ac5-129c8b3c4806" />
+
+<img width="1761" height="1036" alt="User profile" src="https://github.com/user-attachments/assets/fe15f005-cf4f-455b-8045-76d638af2194" />
+
 <img width="1777" height="1037" alt="User not found" src="https://github.com/user-attachments/assets/369fd6c3-2bd2-43a5-952b-f5f115d8ba3d" />
 
 
