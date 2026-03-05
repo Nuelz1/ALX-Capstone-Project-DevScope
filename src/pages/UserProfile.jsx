@@ -65,12 +65,13 @@ const UserProfile = () => {
 
         {/* Sidebar */}
         <div className="lg:col-span-4 bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-
+          <div className="flex justify-center mb-4">
           <img
             src={user.avatar_url}
             alt={user.login}
-            className="w-32 h-32 rounded-full mb-4"
+            className="w-32 h-32 rounded-full"
           />
+          </div>
 
           <h1 className="text-2xl font-semibold">
             {user.name || user.login}

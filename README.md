@@ -1,16 +1,54 @@
-# React + Vite
+# 🔭 DevScope
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
+DevScope is a GitHub intelligence web application that was built with the modern react framework. DevScope in a more microscopic view, is built for developers, recruiters and users who want to quickly and intelligently review github profiles without having to visit the profile and go through all repos. 
+To use Devscope, type a username and booooom, you have an analytical dashbord of the user's github profile. Analysis that consist of, user repositories and update time, programming language used for each repos, number of followers and following, Top language, Top repo, Total stars, list of repositories and many more features. Why don't you see for yourself:👇👇👇
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
+[We'll add the link after deployment]
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📸 Screenshot
+[We'll add this after deployment]
 
-## React Compiler
+## ✨ Features
+1. Search GitHub users
+2. User profile(if user is available)
+3. Sorting based on Starred, forked and updated repos
+4. Filter repositories by programming language
+5. Analytics dashboard showing total stars, top language, and top repository
+6. Proper error messages
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
+1. React
+2. Tailwindcss
+3. Javascript
+4. Vite
+5. React Router
+6. GitHub REST API
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🏃 Running Locally
+
+1. Clone the repository
+```bash
+   git clone https://github.com/Nuelz1/ALX-Capstone-Project-DevScope.git
+```
+2. Install dependencies
+```bash
+   npm install
+```
+3. Create a `.env` file in the root directory and add:
+```
+   VITE_GITHUB_TOKEN=your_github_token_here
+```
+4. Start the development server
+```bash
+   npm run dev
+```
+
+## 📚 What I Learned
+This project has served as the eye opener for me in regards to software engineering. While working on the project, I began to understand better the youtube tutorial concepts. These are a list of the concept I was able to learn and understand:
+1. I learnt how to properly set up a React project environment
+2. I learnt how to implement the V3 and V4 of Tailwindcss to my project
+3. I learnt about the separation of concern. How the logic components, UI components, analytic component should be build independently to separate each concerns
+4. I learnt some new debugging skills, I know where to look when something isn't working. I can interpret debug messages. (Though I know there's no end to the knowledge of debugging) 
