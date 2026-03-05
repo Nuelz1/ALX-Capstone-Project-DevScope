@@ -5,10 +5,10 @@ DevScope is a GitHub intelligence web application that was built with the modern
 To use Devscope, type a username and booooom, you have an analytical dashbord of the user's github profile. Analysis that consist of, user repositories and update time, programming language used for each repos, number of followers and following, Top language, Top repo, Total stars, list of repositories and many more features. Why don't you see for yourself:👇👇👇
 
 ## 🚀 Live Demo
-[We'll add the link after deployment]
+(https://alx-capstone-project-dev-scope.vercel.app/)
 
 ## 📸 Screenshot
-[We'll add this after deployment]
+
 
 ## ✨ Features
 1. Search GitHub users
