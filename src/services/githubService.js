@@ -1,12 +1,9 @@
-const BASE_URL = `https://api.github.com`;
+const BASE_URL = '/api/github';
 
-const headers = {
-    Authorization: `token ${import.meta.env.VITE_GITHUB_TOKEN}`,
-};
 
 export const fetchUserRepos = async (username) => {
     try {
-        const response = await fetch(`${BASE_URL}/users/${username}/repos`, { headers });
+        const response = await fetch(`${BASE_URL}/repos?username=${encodeURIComponent(username)}`);
         if (!response.ok) {
             const error = new Error('Request failed with status ' + response.status);
             error.status = response.status;
@@ -22,7 +19,7 @@ export const fetchUserRepos = async (username) => {
 
 export const fetchGithubUser = async (username) => {
     try {
-        const response = await fetch(`${BASE_URL}/users/${username}`, { headers });
+        const response = await fetch(`${BASE_URL}/user?username=${encodeURIComponent(username)}`);
         if (!response.ok) {
             const error = new Error('Request failed with status ' + response.status);
             error.status = response.status;
