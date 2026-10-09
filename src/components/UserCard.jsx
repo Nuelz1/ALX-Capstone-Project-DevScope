@@ -1,4 +1,3 @@
-import react from 'react'
 
 const UserCard = ({ user }) => {
     const { avatar_url, login, public_repos } = user;

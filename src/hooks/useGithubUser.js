@@ -31,8 +31,11 @@ const useGithubUser = (username) => {
           setError('User not found');
         } else if (err.status === 403) {
           setError('GitHub API rate limit exceeded. Please try again later.');
-        } else if (err.status >= 500) {
-          setError('GitHub is currently unavailable. Please try again later.');
+        } else if (err.status === 502) {
+          setError('Unable to reach GitHub. Please try again later.');
+        } 
+          else if (err.status >= 500) {
+          setError('An unexpected error occurred. Please try again later.');
         } else {
           setError('An error occurred while fetching user data');
         }

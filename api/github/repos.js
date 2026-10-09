@@ -25,7 +25,7 @@ export default async function handler(request, response){
     }   catch (error) {
         console.error('GitHub API error:', error);
 
-        return response.status(500).json({
+        return response.status(502).json({
             message: 'Failed to communicate with GitHub',
         });
     }
