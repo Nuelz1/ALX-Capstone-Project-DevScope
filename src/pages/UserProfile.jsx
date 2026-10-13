@@ -7,29 +7,30 @@ import {
   getMostUsedLanguage,
   getTopStarredRepo,
   sortRepositories,
-  getUniqueLanguages
+  getUniqueLanguages,
 } from "../utils/analytics";
 import RepoList from "../components/RepoList";
 import Spinner from "../components/UI/Spinner";
 import ErrorMessage from "../components/UI/ErrorMessage";
 import LanguageFilter from "../components/LanguageFilter";
-import Button from "../components/UI/Button"
-
+import Button from "../components/UI/Button";
+import Usercard from "../components/UserCard";
 
 const UserProfile = () => {
   const { username } = useParams();
   const { user, loading, error } = useGithubUser(username);
-  const { repos, loading: reposLoading, error: reposError } = useUserRepos(username);
+  const {
+    repos,
+    loading: reposLoading,
+    error: reposError,
+  } = useUserRepos(username);
   const [sortBy, setSortBy] = useState("stars");
-  const [selectedLanguage, setSelectedLanguage] = useState(null)
-  const navigate = useNavigate()
-
-  console.log("sortBy:", sortBy)
-  console.log("selectedLanguage:", selectedLanguage)
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
+  const navigate = useNavigate();
 
   const filteredRepos = selectedLanguage
-    ? repos.filter(repo => repo.language === selectedLanguage)
-    : repos
+    ? repos.filter((repo) => repo.language === selectedLanguage)
+    : repos;
 
   const totalStars = getTotalStars(repos);
   const topRepo = getTopStarredRepo(repos);
@@ -37,10 +38,8 @@ const UserProfile = () => {
   const sortedRepos = sortRepositories(filteredRepos, sortBy);
   const languages = getUniqueLanguages(repos);
 
-
-
   if (loading || reposLoading) {
-    return <Spinner size="large" fullPage={true} />;
+    return <Spinner size="large" fullpage={true} />;
   }
 
   if (error || reposError) {
@@ -51,170 +50,137 @@ const UserProfile = () => {
           className=""
           variant="outline"
           size="medium"
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
         >
-          Search Again</Button>
+          Search Again
+        </Button>
       </div>
-
-    )
+    );
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white px-6 py-10">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-        {/* Sidebar */}
-        <div className="lg:col-span-4 bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-          <div className="flex justify-center mb-4">
-          <img
-            src={user.avatar_url}
-            alt={user.login}
-            className="w-32 h-32 rounded-full"
-          />
-          </div>
-
-          <h1 className="text-2xl font-semibold">
-            {user.name || user.login}
-          </h1>
-
-          {user.bio && (
-            <p className="text-slate-400 mt-2 text-sm leading-relaxed">
-              {user.bio}
-            </p>
-          )}
-
-          <div className="mt-6 space-y-3 text-sm text-slate-400">
-
-            {/* Core Stats (Always Present) */}
-            <div className="flex justify-between">
-              <span>Followers</span>
-              <span className="text-white font-medium">{user.followers}</span>
-            </div>
-
-            <div className="flex justify-between">
-              <span>Following</span>
-              <span className="text-white font-medium">{user.following}</span>
-            </div>
-
-            <div className="flex justify-between">
-              <span>Public Repos</span>
-              <span className="text-white font-medium">{user.public_repos}</span>
-            </div>
-
-            {/* Optional Fields (Render Only If They Exist) */}
-
-            {user.location && (
-              <p>📍 {user.location}</p>
-            )}
-
-            {user.company && (
-              <p>🏢 {user.company}</p>
-            )}
-
-            {user.blog && (
-              <a
-                href={user.blog.startsWith("http") ? user.blog : `https://${user.blog}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block hover:text-white transition-colors"
-              >
-                🔗 {user.blog}
-              </a>
-            )}
-
-            {user.twitter_username && (
-              <a
-                href={`https://twitter.com/${user.twitter_username}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block hover:text-white transition-colors"
-              >
-                🐦 @{user.twitter_username}
-              </a>
-            )}
-
-            {/* GitHub Profile Link (Always Exists) */}
-            <a
-              href={user.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block mt-4 text-sm text-white bg-slate-800 hover:bg-slate-700 transition-colors px-4 py-2 rounded-xl text-center"
-            >
-              View GitHub Profile →
-            </a>
-
-            {/* Member Since */}
-            <p className="text-xs text-slate-500 mt-4">
-              Member since {new Date(user.created_at).toLocaleDateString(undefined, {
-                year: "numeric",
-                month: "long",
-              })}
-            </p>
-
-          </div>
+    <div className="text-white">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-16">
+        {/* Developer Profile */}
+        <div className="lg:col-span-4">
+          <Usercard user={user} />
         </div>
 
         {/* Main Content */}
         <div className="lg:col-span-8 space-y-8">
-
-          {/* Analytics */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-              <p className="text-slate-400 text-sm">Total Stars</p>
-              <p className="text-3xl font-bold">{totalStars}</p>
-            </div>
-
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-              <p className="text-slate-400 text-sm">Top Language</p>
-              <p className="text-3xl font-bold">
-                {topLanguage || "N/A"}
+          {/* Analytics Overview */}
+          <section aria-label="Repository analytics">
+            <div className="mb-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-400">
+                DEVELOPER INSIGHTS
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">
+                Repository analytics
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                A snapshot of @{user.login}&apos;s public GitHub projects.
               </p>
             </div>
 
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-              <p className="text-slate-400 text-sm">Top Repo</p>
-              <p className="text-xl font-semibold">
-                {topRepo?.name || "N/A"}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 transition-colors hover:border-amber-400/30">
+                <p className="text-sm text-slate-400">Total Stars</p>
+                <p className="mt-3 text-3xl font-semibold tracking-tight text-white">
+                  {totalStars.toLocaleString()}
+                </p>
+                <p className="mt-2 text-xs text-slate-500">
+                  Across public repositories
+                </p>
+              </article>
+
+              <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 transition-colors hover:border-indigo-400/30">
+                <p className="text-sm text-slate-400">Top Language</p>
+                <p className="mt-3 break-words text-2xl font-semibold tracking-tight text-white">
+                  {topLanguage || "N/A"}
+                </p>
+                <p className="mt-2 text-xs text-slate-500">
+                  Most-used repository language
+                </p>
+              </article>
+
+              <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 transition-colors hover:border-cyan-400/30">
+                <p className="text-sm text-slate-400">Top Repository</p>
+                <p className="mt-3 break-words text-lg font-semibold text-white">
+                  {topRepo?.name || "N/A"}
+                </p>
+                <p className="mt-2 text-xs text-slate-500">
+                  {topRepo
+                    ? `${topRepo.stargazers_count.toLocaleString()} stars`
+                    : "No repositories available"}
+                </p>
+              </article>
+            </div>
+          </section>
+
+          {/* Repository Explorer */}
+          <section aria-labelledby="repositories-heading">
+            <div className="mb-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-400">
+                PROJECT EXPLORER
+              </p>
+              <h2
+                id="repositories-heading"
+                className="mt-2 text-2xl font-semibold tracking-tight text-white"
+              >
+                Repositories
+              </h2>
+              <p className="mt-2 text-sm text-slate-400">
+                Sort projects and filter by programming language.
               </p>
             </div>
-          </div>
 
-          {/* Controls Section */}
-          <div
-            className="flex flex-wrap items-center gap-4 my-4">
-            <Button
-            variant={sortBy === "stars" ? "primary" : "outline"}
-            onClick={() => setSortBy("stars")}
-            >
-              Stars</Button>
-              <Button
-            variant={sortBy === "forks" ? "primary" : "outline"}
-            onClick={() => setSortBy("forks")}
-            >
-              Forks</Button>
-              <Button
-            variant={sortBy === "updated" ? "primary" : "outline"}
-            onClick={() => setSortBy("updated")}
-            >
-              Updated</Button>
-           
+            <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+              <div>
+                <p className="mb-3 text-xs font-medium uppercase tracking-wider text-slate-500">
+                  Sort by
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant={sortBy === "stars" ? "primary" : "outline"}
+                    onClick={() => setSortBy("stars")}
+                  >
+                    Stars
+                  </Button>
+                  <Button
+                    variant={sortBy === "forks" ? "primary" : "outline"}
+                    onClick={() => setSortBy("forks")}
+                  >
+                    Forks
+                  </Button>
+                  <Button
+                    variant={sortBy === "updated" ? "primary" : "outline"}
+                    onClick={() => setSortBy("updated")}
+                  >
+                    Recently Updated
+                  </Button>
+                </div>
+              </div>
 
-            <LanguageFilter
-              languages={languages}
-              selectedLanguage={selectedLanguage}
-              onSelectLanguage={setSelectedLanguage}
-            />
-          </div>
-
-          {/* Repo List */}
-          <div>
-            <h2 className="text-xl font-bold mb-4">
-              Repositories
-            </h2>
-            <div>
-              <RepoList repos={sortedRepos} />
+              <div className="border-t border-slate-800 pt-4">
+                <p className="mb-3 text-xs font-medium uppercase tracking-wider text-slate-500">
+                  Filter by language
+                </p>
+                <LanguageFilter
+                  languages={languages}
+                  selectedLanguage={selectedLanguage}
+                  onSelectLanguage={setSelectedLanguage}
+                />
+              </div>
             </div>
-          </div>
+
+            <p className="mb-4 text-sm text-slate-400" aria-live="polite">
+              Showing {sortedRepos.length}{" "}
+              {sortedRepos.length === 1 ? "repository" : "repositories"}
+              {selectedLanguage ? ` using ${selectedLanguage}` : ""}
+            </p>
+
+            <RepoList repos={sortedRepos} />
+          </section>
 
         </div>
       </div>

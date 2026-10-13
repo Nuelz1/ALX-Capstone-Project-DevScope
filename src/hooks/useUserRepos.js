@@ -21,8 +21,18 @@ const useUserRepos = (username) => {
         const data = await fetchUserRepos(username);
         setRepos(data);
       } catch (err) {
-        if (err.status === 404) {
+        if (!err.status) {
+          setError('Network error. Please check your internet connection.');
+        }
+        else if (err.status === 404) {
           setError('User not found');
+        } else if (err.status === 403) {
+          setError('GitHub API rate limit exceeded. Please try again later.');
+        }else if (err.status === 502) {
+          setError('Unable to reach GitHub. Please try again later.');
+        }
+         else if (err.status >= 500) {
+          setError('An unexpected error occurred. Please try again later.');
         } else {
           setError('An error occurred while fetching repositories');
         }

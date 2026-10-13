@@ -1,19 +1,19 @@
-const BASE_URL = `https://api.github.com`;
+const BASE_URL = '/api/github';
 
-const headers = {
-    Authorization: `token ${import.meta.env.VITE_GITHUB_TOKEN}`,
+const handleResponse = async (response) => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = new Error(data.message || 'Request failed');
+        error.status = response.status;
+        throw error;
+    };
+    return data;
 };
 
 export const fetchUserRepos = async (username) => {
     try {
-        const response = await fetch(`${BASE_URL}/users/${username}/repos`, { headers });
-        if (!response.ok) {
-            const error = new Error('Request failed with status ' + response.status);
-            error.status = response.status;
-            throw error;
-        }
-        const data = await response.json();
-        return data;
+        const response = await fetch(`${BASE_URL}/repos?username=${encodeURIComponent(username)}`);
+        return await handleResponse(response);
     } catch (error) {
         console.error('Error fetching repositories:', error);
         throw error;
@@ -22,17 +22,13 @@ export const fetchUserRepos = async (username) => {
 
 export const fetchGithubUser = async (username) => {
     try {
-        const response = await fetch(`${BASE_URL}/users/${username}`, { headers });
-        if (!response.ok) {
-            const error = new Error('Request failed with status ' + response.status);
-            error.status = response.status;
-            throw error;
-        }
-        const data = await response.json();
-        return data;
+        const response = await fetch(`${BASE_URL}/user?username=${encodeURIComponent(username)}`);
+        return await handleResponse(response);
     } catch (error) {
         console.error('Error fetching user data:', error);
         throw error;
     }
 };
+
+
 

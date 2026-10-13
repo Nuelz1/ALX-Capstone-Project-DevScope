@@ -1,48 +1,98 @@
-// src/components/repos/RepoList.jsx
 
 export default function RepoList({ repos }) {
   if (!repos || repos.length === 0) {
     return (
-      <div className="mt-6 text-slate-400">
-        No repositories found.
+      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 px-6 py-12 text-center">
+        <span className="text-3xl" aria-hidden="true">
+          📂
+        </span>
+
+        <h3 className="mt-4 text-base font-semibold text-slate-200">
+          No repositories found
+        </h3>
+
+        <p className="mt-2 max-w-sm text-sm leading-6 text-slate-400">
+          There are no repositories to display for the current selection.
+          Try choosing another language or viewing all repositories.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="mt-6 space-y-4">
+    <div className="space-y-4">
       {repos.map((repo) => (
-        <div
+        <article
           key={repo.id}
-          className="bg-slate-900 border border-slate-800 p-4 rounded-xl"
+          className="group rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition-colors duration-200 hover:border-indigo-400/40 hover:bg-slate-900 sm:p-6"
         >
-          {/* Repo Name */}
-          <a
-            href={repo.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-indigo-400 font-semibold hover:underline"
-          >
-            {repo.name}
-          </a>
+          {/* Repository name and visibility */}
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <h3 className="min-w-0 break-words text-base font-semibold">
+              <a
+                href={repo.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-sm text-indigo-300 transition-colors hover:text-indigo-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+              >
+                {repo.name}
+                <span
+                  className="ml-2 inline-block text-xs transition-transform duration-200 group-hover:translate-x-0.5"
+                  aria-hidden="true"
+                >
+                  ↗
+                </span>
+              </a>
+            </h3>
 
-          {/* Description */}
-          {repo.description && (
-            <p className="text-slate-400 text-sm mt-1">
-              {repo.description}
-            </p>
-          )}
-
-          {/* Metadata */}
-          <div className="flex gap-4 text-xs text-slate-500 mt-3">
-            <span>⭐ {repo.stargazers_count}</span>
-            <span>🍴 {repo.forks_count}</span>
-            {repo.language && <span>🧠 {repo.language}</span>}
-            <span>
-              Updated: {new Date(repo.updated_at).toLocaleDateString()}
+            <span className="shrink-0 rounded-full border border-slate-700 bg-slate-800/70 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-slate-400">
+              {repo.fork ? "Fork" : "Repository"}
             </span>
           </div>
-        </div>
+
+          {/* Repository description */}
+          <p className="mt-3 text-sm leading-6 text-slate-400">
+            {repo.description || "No description provided for this repository."}
+          </p>
+
+          {/* Repository metadata */}
+          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-slate-800 pt-4 text-xs text-slate-400">
+            <span className="inline-flex items-center gap-1.5" title="Stars">
+              <span aria-hidden="true" className="text-amber-300">★</span>
+              <span className="font-medium text-slate-200">
+                {repo.stargazers_count.toLocaleString()}
+              </span>
+              <span>stars</span>
+            </span>
+
+            <span className="inline-flex items-center gap-1.5" title="Forks">
+              <span aria-hidden="true">⑂</span>
+              <span className="font-medium text-slate-200">
+                {repo.forks_count.toLocaleString()}
+              </span>
+              <span>forks</span>
+            </span>
+
+            {repo.language && (
+              <span className="inline-flex items-center gap-2">
+                <span
+                  className="h-2 w-2 rounded-full bg-indigo-400"
+                  aria-hidden="true"
+                />
+                <span>{repo.language}</span>
+              </span>
+            )}
+
+            <span className="ml-auto text-slate-500">
+              Updated{" "}
+              {new Date(repo.updated_at).toLocaleDateString(undefined, {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+        </article>
       ))}
     </div>
   );
