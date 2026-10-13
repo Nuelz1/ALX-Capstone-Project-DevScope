@@ -12,6 +12,7 @@ const SearchBar = () => {
     e.preventDefault();
 
     const trimmedUsername = username.trim();
+    setUsername(trimmedUsername);
 
     if (!trimmedUsername) {
       setError("Please enter a GitHub username.");
@@ -19,7 +20,6 @@ const SearchBar = () => {
     }
 
     setError("");
-    setUsername(trimmedUsername);
     navigate(`/user/${encodeURIComponent(trimmedUsername)}`);
   };
 
