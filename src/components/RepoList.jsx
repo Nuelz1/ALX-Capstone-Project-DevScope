@@ -1,5 +1,11 @@
+import { motion, useReducedMotion} from "motion/react";
+
+
+
 
 export default function RepoList({ repos }) {
+
+  const shouldReducedMotion = useReducedMotion();
   if (!repos || repos.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 px-6 py-12 text-center">
@@ -22,8 +28,22 @@ export default function RepoList({ repos }) {
   return (
     <div className="space-y-4">
       {repos.map((repo) => (
-        <article
+        <motion.article
           key={repo.id}
+          initial={
+            shouldReducedMotion
+            ? false
+            : { opacity: 0, y:12}
+          }
+          animate = {{opacity: 1, y:0}}
+          transition = {{
+            duration: shouldReducedMotion ? 0 : 0.3,
+            delay: shouldReducedMotion ? 0 : Math.min(
+              repos.indexOf(repo) * 0.05,
+              0.25
+            ),
+            ease: "easeOut"
+          }}
           className="group rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition-colors duration-200 hover:border-indigo-400/40 hover:bg-slate-900 sm:p-6"
         >
           {/* Repository name and visibility */}
@@ -92,7 +112,7 @@ export default function RepoList({ repos }) {
               })}
             </span>
           </div>
-        </article>
+        </motion.article>
       ))}
     </div>
   );
