@@ -1,5 +1,8 @@
+import {motion, useReducedMotion} from "framer-motion";
 
 import SearchBar from "../components/SearchBar";
+
+
 
 const features = [
   {
@@ -44,7 +47,12 @@ const features = [
   },
 ];
 
+
+
 export default function Home() {
+
+  const shouldReduceMotion = useReducedMotion();
+  
   return (
     <div className="relative isolate flex min-h-[calc(100vh-5rem)] flex-col items-center justify-center py-12 sm:py-16">
       {/* Decorative background glow */}
@@ -54,7 +62,15 @@ export default function Home() {
       />
 
       {/* Hero section */}
-      <section className="w-full max-w-3xl text-center">
+      <motion.section
+          className="w-full max-w-3xl text-center"
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: shouldReduceMotion ? 0 : 0.45,
+            ease: "easeOut",
+          }}
+        >
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-400/20 bg-indigo-400/[0.07] px-3.5 py-1.5">
           <span
             aria-hidden="true"
@@ -91,7 +107,7 @@ export default function Home() {
         <p className="mt-5 text-sm text-slate-500">
           Built for developers, learners, and technical recruiters.
         </p>
-      </section>
+      </motion.section>
 
       {/* Feature section */}
       <section
@@ -116,10 +132,30 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <motion.div
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+            initial={shouldReduceMotion ? false : "hidden"}
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: shouldReduceMotion ? 0 : 0.08,
+                },
+              },
+            }}
+          >
           {features.map((feature) => (
-            <article
+            <motion.article
               key={feature.title}
+              variants={{
+                hidden: { opacity: 0, y: 10 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              transition={{
+                duration: shouldReduceMotion ? 0 : 0.3,
+                ease: "easeOut",
+              }}
               className={`group rounded-2xl border border-slate-800 bg-slate-900/60 p-5 transition-colors duration-200 ${feature.borderHover}`}
             >
               <div
@@ -140,9 +176,9 @@ export default function Home() {
               <p className="mt-2 text-sm leading-6 text-slate-400">
                 {feature.description}
               </p>
-            </article>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
       </section>
     </div>
   );

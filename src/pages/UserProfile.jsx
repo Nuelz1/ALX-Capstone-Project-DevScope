@@ -15,6 +15,9 @@ import ErrorMessage from "../components/UI/ErrorMessage";
 import LanguageFilter from "../components/LanguageFilter";
 import Button from "../components/UI/Button";
 import Usercard from "../components/UserCard";
+import {motion, useReducedMotion} from "motion/react";
+
+
 
 const UserProfile = () => {
   const { username } = useParams();
@@ -38,6 +41,9 @@ const UserProfile = () => {
   const sortedRepos = sortRepositories(filteredRepos, sortBy);
   const languages = getUniqueLanguages(repos);
 
+  const shouldReduceMotion = useReducedMotion();
+
+
   if (loading || reposLoading) {
     return <Spinner size="large" fullpage={true} />;
   }
@@ -59,7 +65,16 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="text-white">
+    <motion.div 
+    className="text-white"
+    initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
+    animate= {{ opacity: 1, y: 0 }}
+    transition={{ 
+      duration: shouldReduceMotion ? 0 : 0.45, 
+      ease: "easeOut"
+    }}
+    
+    >
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-16">
         {/* Developer Profile */}
         <div className="lg:col-span-4">
@@ -82,8 +97,30 @@ const UserProfile = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 transition-colors hover:border-amber-400/30">
+            <motion.div
+              className="grid grid-cols-1 gap-4 sm:grid-cols-3"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: shouldReduceMotion ? 0 : 0.1,
+                  },
+                },
+              }}
+              initial={shouldReduceMotion ? false : "hidden"}
+              animate="visible"
+            >
+              <motion.article
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                transition={{
+                  duration: shouldReduceMotion ? 0 : 0.3,
+                  ease: "easeOut",
+                }}
+                className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 transition-colors hover:border-amber-400/30"
+              >
                 <p className="text-sm text-slate-400">Total Stars</p>
                 <p className="mt-3 text-3xl font-semibold tracking-tight text-white">
                   {totalStars.toLocaleString()}
@@ -91,9 +128,19 @@ const UserProfile = () => {
                 <p className="mt-2 text-xs text-slate-500">
                   Across public repositories
                 </p>
-              </article>
+              </motion.article>
 
-              <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 transition-colors hover:border-indigo-400/30">
+              <motion.article
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                transition={{
+                  duration: shouldReduceMotion ? 0 : 0.3,
+                  ease: "easeOut",
+                }}
+                className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 transition-colors hover:border-indigo-400/30"
+              >
                 <p className="text-sm text-slate-400">Top Language</p>
                 <p className="mt-3 break-words text-2xl font-semibold tracking-tight text-white">
                   {topLanguage || "N/A"}
@@ -101,9 +148,19 @@ const UserProfile = () => {
                 <p className="mt-2 text-xs text-slate-500">
                   Most-used repository language
                 </p>
-              </article>
+              </motion.article>
 
-              <article className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 transition-colors hover:border-cyan-400/30">
+              <motion.article
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                transition={{
+                  duration: shouldReduceMotion ? 0 : 0.3,
+                  ease: "easeOut",
+                }}
+                className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 transition-colors hover:border-cyan-400/30"
+              >
                 <p className="text-sm text-slate-400">Top Repository</p>
                 <p className="mt-3 break-words text-lg font-semibold text-white">
                   {topRepo?.name || "N/A"}
@@ -113,8 +170,8 @@ const UserProfile = () => {
                     ? `${topRepo.stargazers_count.toLocaleString()} stars`
                     : "No repositories available"}
                 </p>
-              </article>
-            </div>
+              </motion.article>
+            </motion.div>
           </section>
 
           {/* Repository Explorer */}
@@ -179,12 +236,15 @@ const UserProfile = () => {
               {selectedLanguage ? ` using ${selectedLanguage}` : ""}
             </p>
 
-            <RepoList repos={sortedRepos} />
+            <RepoList 
+            key = {`${sortBy}-${selectedLanguage ?? "all"}`} 
+            repos = {sortedRepos}
+            />
           </section>
 
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
